@@ -31,7 +31,7 @@ chkconfig vnstat on
 
 read serverAlias
 
-rm -rf /home/serverstatus/client-psutil.py -y
+rm -rf /home/serverstatus/client-psutil.py
 
 cat > /home/serverstatus/client-psutil.py << EOL
 # -*- coding: utf-8 -*-
@@ -267,7 +267,7 @@ echo "nohup python /home/serverstatus/client-psutil.py &> /dev/null &" >> /etc/r
 sudo yum install policycoreutils-python iptables-services -y
 semanage port -a -t ssh_port_t -p tcp 2022
 
-rm -rf /etc/ssh/sshd_config -y
+rm -rf /etc/ssh/sshd_config
 
 cat > /etc/ssh/sshd_config << EOL
 #	$OpenBSD: sshd_config,v 1.100 2016/08/15 12:32:04 naddy Exp $
