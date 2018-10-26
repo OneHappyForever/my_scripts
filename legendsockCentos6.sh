@@ -37,7 +37,7 @@ chkconfig vnstat on
 
 read -p 'Serverstatus code:' serverAlias
 
-rm -rf /home/serverstatus/client-psutil.py -y
+rm -rf /home/serverstatus/client-psutil.py
 
 cat > /home/serverstatus/client-psutil.py << EOL
 # -*- coding: utf-8 -*-
