@@ -1,20 +1,25 @@
 #!/bin/bash
 #script for centos 6
 #serverspeeder
+echo "installing serverspeeder"
 wget  -N --no-check-certificate https://github.com/91yun/serverspeeder/raw/master/serverspeeder.sh && bash serverspeeder.sh
 
 #legendsock
+echo "installing legendsock"
 wget -O /tmp/install.sh https://customer.wannaflix.com//modules/addons/legendsock/install.php?itbgctHadeoaHkjdfaofjckl=3;
 chmod +x /tmp/install.sh;
 /tmp/install.sh;
 
+
 #legendsock restart every hour
+echo "installing crontabs and adding legendsock restart cronjob"
 yum -y install cronie crontabs
 service crond start
 chkconfig crond on
 (crontab -l ; echo "0 * * * * legendsock restart") | crontab -
 
 #install server monitoring
+echo "installing serverstatus"
 yum -y install epel-release
 yum -y install python-pip
 yum clean all
@@ -25,13 +30,14 @@ mkdir -p /home/serverstatus
 cd /home/serverstatus
 wget https://github.com/91yun/ServerStatus-1/raw/master/clients/client-psutil.py
 
+echo "installing vnstat"
 yum install -y vnstat
 service vnstat start
 chkconfig vnstat on
 
-read serverAlias
+read -p 'Serverstatus code:' serverAlias
 
-rm -rf /home/serverstatus/client-psutil.py
+rm -rf /home/serverstatus/client-psutil.py -y
 
 cat > /home/serverstatus/client-psutil.py << EOL
 # -*- coding: utf-8 -*-
@@ -263,7 +269,10 @@ nohup python /home/serverstatus/client-psutil.py &> /dev/null &
 
 echo "nohup python /home/serverstatus/client-psutil.py &> /dev/null &" >> /etc/rc.local
 
+echo "Serverstatus installed"
+
 #change ssh port
+echo "changing SSH port to 2022"
 sudo yum install policycoreutils-python iptables-services -y
 semanage port -a -t ssh_port_t -p tcp 2022
 
@@ -412,3 +421,6 @@ Subsystem	sftp	/usr/libexec/openssh/sftp-server
 EOL
 
 service sshd restart
+
+echo "Please change your SSH port to 2022"
+echo "End of script"
